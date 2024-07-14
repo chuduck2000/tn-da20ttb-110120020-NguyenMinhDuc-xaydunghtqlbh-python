@@ -1,0 +1,159 @@
+{% load static %}
+
+<header class="header-section">
+  {% if user.id is None %}
+  <div class="header-top">
+    <div class="container">
+      <div class="ht-left">
+        <div class="mail-service">
+          <i class="fa fa-envelope"></i>(^_^)@gmail.com
+        </div>
+        <div class="phone-service">
+          <i class="fa fa-phone"></i>+12 34.56.78.910
+        </div>
+      </div>
+
+      <div class="ht-right">
+        <a href="{% url 'login' %}" class="login-panel"><i class="fa fa-user"></i>Tài khoản</a>
+        {% comment %}
+        <div class="lan-selector">
+          <select name="countries" id="countries" class="language_drop" style="width: 300px">
+            <option value="vn" data-imagecss="flag vn" data-title="VietNam">
+              Tiếng Việt
+            </option>
+            <option value="yt" data-imagecss="flag yt" data-title="English">
+              English
+            </option>
+          </select>
+        </div>
+        {% endcomment %}
+        <div class="top-social">
+          <a href="#"><i class="ti-facebook"></i></a>
+          <a href="#"><i class="ti-twitter"></i></a>
+          <a href="#"><i class="ti-google"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+
+  <div class="header-top">
+    <div class="container">
+      <div class="ht-left">
+        <div class="mail-service">
+          <i class="fa fa-envelope"></i>(^_^)@gmail.com
+        </div>
+        <div class="phone-service">
+          <i class="fa fa-phone"></i>+12 34.56.78.910
+        </div>
+      </div>
+
+      <div class="ht-right">
+        <a href="{% url 'logout' %}" class="login-panel"
+          style="margin-right: 15px; text-decoration: none; color: black">
+          <i class="fa fa-power-off"></i>Đăng xuất
+        </a>
+        <a href="{% if user.username == 'admin' %}http://127.0.0.1:8000/admin/{% else %}{% url 'dashboard' %}{% endif %}"
+          class="login-panel" style="margin-right: 15px; text-decoration: none; color: black">
+          <i class="fa fa-user"></i> {{ user.username }}
+        </a>
+
+        {% comment %}
+        <div class="lan-selector">
+          <select name="countries" id="countries" class="language_drop" style="width: 300px">
+            <option value="vn" data-imagecss="flag vn" data-title="VietNam">
+              Tiếng Việt
+            </option>
+            <option value="yt" data-imagecss="flag yt" data-title="English">
+              English
+            </option>
+          </select>
+        </div>
+        {% endcomment %} {% comment %}
+        <div class="top-social">
+          <a href="#"><i class="ti-facebook"></i></a>
+          <a href="#"><i class="ti-twitter"></i></a>
+          <a href="#"><i class="ti-google"></i></a>
+        </div>
+        {% endcomment %}
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  <div class="container">
+    <div class="inner-header">
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <div class="logo">
+            <a href="{% url 'home' %}"><img src="{% static 'img/logoo.png' %}" height="50" alt="" /></a>
+          </div>
+        </div>
+
+        <div class="col-lg-7 col-md-7">
+          <form action="{% url 'search' %}" class="search" method="GET">
+            <div class="advanced-search">
+              <button type="button" class="category-btn">Tìm kiếm</button>
+              <div class="input-group">
+                <input type="text" placeholder="Bạn cần gì?" name="keyword" />
+                <button type="submit"><i class="ti-search"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-lg-2 col-md-2 text-right">
+          <ul class="nav-right">
+            <li class="heart-icon">
+              <a href="#">
+                <i class="icon_heart_alt"></i>
+                <span></span>
+              </a>
+            </li>
+            <li class="cart-icon">
+              <a href="{% url 'cart' %}">
+                <i class="icon_bag_alt"></i>
+                <span>{{cart_count}}</span>
+              </a>
+              <div class="cart-hover">
+                <div class="select-button">
+                  <a href="{% url 'cart' %}" class="primary-btn view-card">XEM GIỎ HÀNG</a>
+                  <a href="{% url 'checkout' %}" class="primary-btn checkout-btn">THANH TOÁN</a>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-item">
+    <div class="container">
+      <div class="nav-depart">
+        <div class="depart-btn">
+          <i class="ti-menu"></i>
+          <span>Các loại sản phẩm</span>
+          <ul class="depart-hover">
+            {% for category in links %}
+            <li class="active">
+              <a href="{{category.get_url}}">{{category.category_name}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <nav class="nav-menu mobile-menu">
+        <ul>
+          <li {% if current_path == 'home' %} class="active" {% endif %}><a href="{% url 'home' %}">Trang chủ</a></li>
+          {% comment %} <li><a href="">Phụ kiện</a></li> {% endcomment %}
+          <li{% if current_path == 'discounted_products' %} class="active" {% endif %}><a
+              href="{% url 'discounted_products' %}">Flash Sale</a></li>
+          <li><a href="{% url 'new_products' %}">Sản phẩm mới</a></li> 
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

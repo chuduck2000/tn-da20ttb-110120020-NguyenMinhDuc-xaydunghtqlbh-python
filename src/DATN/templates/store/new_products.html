@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="product-shop spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="product-show-option">
+          <div class="row">
+            <div class="col-lg-7 col-md-7">
+              <h5 class="fw-title">Số lượng sản phẩm: {{product_count}}</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display Discounted Products -->
+        <div class="product-list">
+          <div class="row">
+            {% for product in products %}
+            <div class="col-lg-4 col-sm-6">
+              <div class="product-item">
+                <div class="pi-pic">
+                  <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="" style="width: 250px; height: 350px; object-fit: cover;"></a>
+                  {% if product.promotions > 0 %}
+                  <div class="sale pp-sale">Giảm giá</div>
+                  {% endif %}
+                  <div class="icon">
+                    <i class="">Số lượng: {{product.stock}}</i>
+                  </div>
+                  <ul>
+                    {% if product.stock > 0 %}
+                    <li class="w-icon active"><a href="{% url 'add_cart' product.id %}"><i class="icon_bag_alt"></i>Thêm vào giỏ</a></li>
+                    {% else %}
+                    <li class="w-icon disabled">
+                      <a href="#" style="cursor: not-allowed; background: black; color: white;">
+                        Hết hàng
+                      </a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </div>
+                <div class="pi-text">
+                  <div class="catagory-name">
+                    <a href="{{product.get_url}}" style="color: blue; text-decoration: none;" onmouseover="this.style.color='darkblue'" onmouseout="this.style.color='blue'">
+                      {{product.product_name}}
+                    </a>
+                  </div>
+                  <div class="product-price">${{ product.price }}
+                    {% if product.promotions > 0 %}
+                    <span>${{ product.promotions }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Pagination Section -->
+        <nav class="mt-4 d-flex justify-content-center" aria-label="Page navigation sample">
+          {% if products.has_other_pages %}
+          <ul class="pagination">
+            {% if products.has_previous %}
+            <li class="page-item">
+              <a href="?page={{ products.previous_page_number }}" class="page-link">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a href="#" class="page-link">
+                <i class="fas fa-chevron-left"></i>
+              </a>
+            </li>
+            {% endif %}
+
+            {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+            <li class="page-item active">
+              <a href="#" class="page-link">{{ i }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+              <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <li class="page-item">
+              <a href="?page={{ products.next_page_number }}" class="page-link">
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a href="#" class="page-link">
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          {% endif %}
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</section>
+<a href="https://chat.zalo.me/" target="_blank" id="zalo-icon">
+  <img src="{% static 'img/zalo.png' %}" alt="Zalo" width="70" height="70">
+</a>
+<!-- Js Plugins -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination .page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .pagination .page-link:hover {
+    background-color: #ddd;
+  }
+
+  .pagination .page-item.active .page-link {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .pagination .page-item.disabled .page-link {
+    color: #aaa;
+  }
+
+  #zalo-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  #zalo-icon img {
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+</style>
+{% endblock %}

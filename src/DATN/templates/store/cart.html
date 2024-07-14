@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="breadcrumb-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-text">
+          <a href="#"><i class="fa fa-home"></i>Home</a>
+          <span>Giỏ hàng</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if not cart_items %}
+
+<div class="col-12 text-center"><br>
+  <h3>Bạn chưa chọn sản phẩm.</h3>
+  <div>
+    <img src="{% static 'img/not_item.png' %}" alt="">
+  </div>
+  <h5>=====><a href="{% url 'home' %}" class="btn btn-primary">Click vào đây</a><=====<br>Chọn ngay sản phẩm yêu thích.</h5><br>
+</div>
+{% else %}
+
+
+<div class="shopping-cart spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="cart-table" style="display: block;">
+          {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+          {% endif %}
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Hình ảnh</th>
+                <th class="p-name">Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+                <th><i class="ti-close"></i></th>
+              </tr>
+            </thead>
+          </table>
+          <div style="max-height: 500px; overflow-y: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+            <tbody>
+              {% for cart_item in cart_items %}
+              <tr>
+                <td class="cart-pic first-row"><img src="{{cart_item.product.images.url}}" height="200" alt=""></td>
+                <td class="cart-title first-row">
+                  <figure class="itemside align-items-center">
+                    <figcaption class="info">
+                      <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{cart_item.product.product_name}}</a>
+                      <p class="text-muted small">
+                        {% if cart_item.variations.all %}
+                          
+                          {% for item in cart_item.variations.all %}
+                            {{item.variation_category | capfirst}} : {{item.variation_value | capfirst}} <br>
+                          {% endfor %}
+                            
+                        {% endif %} 
+                      </p>
+                    </figcaption>
+                  </figure>
+                    
+                </td>
+                <td class="p-price first-row">{{cart_item.product.price}}</td>
+                <td class="qua-col first-row">
+                    <div class="quantity">
+                        {% comment %} <div class="pro-qty">
+                          <a href="{% url 'add_cart' cart_item.product.id %}" class="dec qtybtn"></a>
+                          <input type="text" value="{{cart_item.quantity}}" >
+                          <a href="{% url 'add_cart' cart_item.product.id %}" class="inc qtybtn"></a>
+                        </div> {% endcomment %}
+
+                        <div class="col">
+                          <div class="input-group input-spinner">
+                            <div class="input-group-append">
+                              <a href="{% url 'remove_cart' cart_item.product.id cart_item.id %}" class="btn btn-light" type="button" id="button-plus"><i class="fa fa-minus"></i></a>
+                            </div>
+
+                            <input type="text" class="form-control text-center" value="{{ cart_item.quantity }}">
+                              
+
+                            <div class="input-group-prepend">
+                              <form action="{% url 'add_cart' cart_item.product.id %}" method="POST">
+                              {% csrf_token %}
+                              
+                              {% for item in cart_item.variations.all %}
+                                <input type="hidden" name="{{item.variation_category | lower}}" value="{{item.variation_value | capfirst}}">
+                              {% endfor %}
+                                <button class="btn btn-light" type="submit" id="button-minus"><i class="fa fa-plus"></i></button>
+                              {% comment %} <a href="{% url 'add_cart' cart_item.product.id %}" class="btn btn-light" type="button" id="button-minus"><i class="fa fa-plus"></i></a> {% endcomment %}
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="total-price first-row">{{cart_item.sub_total}}</td>
+                <td class="close-td first-row"><a class="ti-close" href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+          <div div style="border: 2px solid #ff0000; background-color: #fff3f3; padding: 10px; border-radius: 5px; margin-top: 15px; font-weight: bold; color: #cc0000;">
+            <p style="margin: 0; font-size: 16px;">
+              <i class="fas fa-truck" style="font-size: 20px; color: #ff0000; margin-right: 5px;"></i>Với đơn hàng trên $500, quý khách sẽ được miễn phí vận chuyển.
+            </p>
+            <p style="margin: 0; font-size: 16px;">
+              <span style="font-size: 20px;">💰</span> Với đơn hàng trên $1000, quý khách sẽ được giảm 10% giá trị đơn hàng.
+            </p>
+          </div>
+    </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="cart-buttons">
+                  <a href="{% url 'store' %}" class="primary-btn up-cart">Mua thêm</a>   
+                 {% comment %} <a href="#" class="primary-btn continue-shop">Cập nhật giỏ hàng</a>    {% endcomment %}
+                </div>
+                <div class="discount-coupon">
+                    <h6>Mã giảm giá</h6>
+                    <form action="#" class="coupon-form">
+                        <input type="text" placeholder="Nhập mã giảm giá vào đây">
+                        <button type="submit" class="site-btn coupon-btn">Xác nhận</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-4">
+                <div class="proceed-checkout">
+                  <ul>
+                    <li class="cart-total">Tổng cộng:<span>{{total}}</span></li>
+                    <li class="" style="display: flex; align-items: center; justify-content: center;"><span>+</span></li>
+                    <li class="subtotal">Vận chuyển:<span>{{ship}}</span></li>
+                    <li class="subtotal">Giảm giá:<span>{{discount}}</span></li>
+                    <li class="cart-total">Tạm tính:<span>{{grand_total}}</span></li>
+                  </ul>
+                    <a href="{% url 'checkout' %}" class="proceed-btn">Đến thanh toán</a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock content %}

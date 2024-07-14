@@ -1,0 +1,493 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="breadcrumb-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-text">
+          <a href="#"><i class="fa fa-home"></i>Home</a>
+          <a href="#">Store</a>
+          <span>Chi tiết</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="product-shop spad page-details">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="filter-widget">
+          <h4 class="fw-title">Giới tính</h4>
+            <ul class="filter-catagories">
+              <li><a href="#">Nam</a></li>
+              <li><a href="#">Nữ</a></li>
+              <li><a href="#">Trẻ em</a></li>
+            </ul>
+        </div>    
+        <div class="filter-widget">
+          <h4 class="fw-title">Thương hiệu</h4>
+          <div class="fw-brand-check">
+            <div class="bc-item">
+              <label for="bc-calvin">
+                Calvin Klein
+                <input type="checkbox" id="bc-calvin">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Giá</h4>
+          <div class="filter-range-wrap">
+            <div class="range-slider">
+              <div class="price-input">
+                <input type="text" id="minamount">
+                <input type="text" id="maxamount">
+              </div>
+            </div>
+            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" data-min="33" data-max="98">
+              <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+              <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+              <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+            </div>
+          </div>
+          <a href="#" class="filter-btn">Lọc giá</a>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Màu sắc</h4>
+          <div class="fw-color-choose">
+            <div class="cs-item">
+              <input type="radio" id="cs-black">
+              <label for="cs-black" class="cs-black">black</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-violet">
+              <label for="cs-violet" class="cs-violet">violet</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-blue">
+              <label for="cs-blue" class="cs-blue">blue</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-green">
+              <label for="cs-green" class="cs-green">green</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-red">
+              <label for="cs-red" class="cs-red">red</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-yellow">
+              <label for="cs-yellow" class="cs-yellow">yellow</label>
+            </div>
+          </div>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Kích thước</h4>
+          <div class="fw-size-choose">
+            <div class="sc-item">
+                <input type="radio" id="s-size">
+                <label for="s-size">S</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="m-size">
+              <label for="m-size">M</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="l-size">
+              <label for="l-size">L</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="xs-size">
+              <label for="xs-size">XL</label>
+            </div>
+          </div>
+        </div>
+      </div> 
+
+      <div class="col-lg-9"> {% comment %}---Sản phẩm---{% endcomment %}
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="product-pic-zoom">
+                <img class="product-big-img" src="{{ single_product.images.url }}" alt="">
+                <div class="zoom-icon">
+                  <i class="fa fa-search-plus"></i>
+                </div>
+              </div>
+              <div class="product-thumbs">
+                <div class="product-thumbs-track ps-slider owl-carousel">
+                  <div class="pt active" data-imgbigurl="{{ single_product.images.url }}">
+                    <img src="{{ single_product.images.url }}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                {% csrf_token %}
+                <div class="product-details">
+                  <div class="pd-title">
+                    <span></span>
+                    <h3>{{ single_product.product_name }}</h3>
+                    {% comment %} <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a> {% endcomment %}
+                  </div>
+                  <div class="rating-star">
+                    <span>
+                      <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                      <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                      <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                      <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                      <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                      <span>({{single_product.countReview}}) đánh giá</span>
+                    </span>
+                  </div><br>
+                  <div class="pd-desc">
+                    <h4>$ {{ single_product.price }}</h4>
+                    <span>{{ product.promotions }}</span>
+                  </div>
+                  {% if single_product.stock <= 0 %}  
+                  <button type="submit" class="site-btn place-btn" style="cursor: not-allowed; background: black" disabled>Hết   hàng</button>
+                  {% else %}
+                  <hr>
+                  <div class="row" style="display: flex; justify-content: flex-start; gap: 10px; padding-right: 5px; margin-left: 10px;"> 
+                    <div class="item-option-select" style="display: flex; align-items: center; gap: 10px;">
+                      <h6>Màu: </h6>
+                      <select name="color" id="" class="form-control">
+                        {% for i in single_product.variation_set.colors %}
+                        <option value="{{ i.variation_value | lower }}">{{i.variation_value | capfirst}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="item-option-select" style="display: flex; margin-left: 20px; align-items: center; gap: 10px;">
+                      <h6>Size: </h6>
+                      <select name="size" id="" class="form-control">
+                        {% for i in single_product.variation_set.sizes %}
+                        <option value="{{ i.variation_value | lower }}">{{i.variation_value | capfirst}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  
+                  {% comment %} ---Size--- {% endcomment %}
+                  {% comment %} <div class="row" style="display: flex; justify-content: flex-start; padding-right: 5px; margin-left: 10px;"> 
+                    <div class="item-option-select">
+                      <h6>Chọn Size: </h6>
+                        <select name="size" id="" class="form-control">
+                          {% for i in single_product.variation_set.sizes %}
+                          <option value="{{ i.variation_value | lower }}">{{i.variation_value | capfirst}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                  </div> {% endcomment %}
+                  <hr>
+                  <button type="submit" href="{% url 'add_cart' single_product.id %}" class="primary-btn pd-cart">Thêm vào giỏ</button>
+                  <i class="">Số lượng: {{product.stock}}</i>
+                  {% endif %}
+
+                </div>
+              </form>
+            </div>
+          </div>
+            <!--Comment-->
+          <div class="product-tab">
+            <div class="tab-item">
+              <ul class="nav" role="tablist">
+                <li><a class="active" href="#tab-1" data-toggle="tab" role="tab">Mô tả sản phẩm</a></li>
+                {% comment %} <li><a href="#tab-2" data-toggle="tab" role="tab">Thông số kỹ thuật</a></li> {% endcomment %}
+                <li><a href="#tab-3" data-toggle="tab" role="tab">Bình luận-Đánh giá sản phẩm</a></li>
+              </ul>
+            </div>
+            <div class="tab-item-content">
+              <div class="tab-content">
+                <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+                  <div class="product-content">
+                    <div class="row">
+                      <div class="col-lg-12">
+
+                      <p>{{ single_product.description }}</p>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% comment %} <div class="tab-pane fade" id="tab-2" role="tabpanel">
+                  <div class="specification-table">
+                    <table>
+                      <tr>
+                        <td class="p-catagory">Đánh giá</td>
+                        <td>
+                          <div class="pd-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span>(5)</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Giá</td>
+                        <td>
+                          <div class="p-price">$500
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Thêm vào giỏ hàng</td>
+                        <td>
+                          <div class="cart-add">+Thêm</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Số lượng</td>
+                        <td>
+                          <div class="p-stock">22 cái trong kho</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Cân nặng</td>
+                        <td>
+                          <div class="p-weight">1,3kg</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Size</td>
+                        <td>
+                          <div class="p-size">XXL</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-catagory">Màu</td>
+                        <td>
+                          <div class="cs-color">Vàng</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div> {% endcomment %}
+                {% comment %} <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                  <div class="customer-review-option">
+                      <h4>Bình luận</h4>
+                      <div class="comment-option">
+                        <div class="co-item">
+                          <div class="avatar-pic">
+                            <img src="" alt="">
+                          </div>
+                          <div class="avatar-text">
+                            <div class="at-rating">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star-o"></i>
+                            </div>
+                            <h5>Duc <span>6/6/2024</span></h5>
+                            <div class="at-reply">Tốt!</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="personal-rating">
+                        <h6>Xếp hạng của bạn</h6>
+                        <div class="rating">
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star-o"></i>
+                        </div>
+                      </div>
+                      <div class="leave-comment">
+                        <h4>Để lại bình luận</h4>
+                        <form action="" class="comment-form">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <input type="text" name="" id="" placeholder="Tên">
+                            </div>
+                            <div class="col-lg-6">
+                              <input type="text" name="" id="" placeholder="Email">
+                            </div>
+                            <div class="col-lg-12">
+                              <textarea name="" id="" placeholder="Bình luận"></textarea>
+                              <button type="submit" class="site-btn">Gửi bình luận</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
+                </div> {% endcomment %}
+                  <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-9">
+                        <form action="{% url 'submit_review' single_product.id %}" method="POST" class="comment-form">
+                          {% csrf_token %}
+                          <div class="leave-comment">
+                            <h4>Để lại bình luận của bạn về sản phẩm</h4>
+                            <div class="rate">
+                              Đánh giá: <br>
+                              <input type="radio" name="rating" id="rating10" value="5" required><label for="rating10" title="5"></label>
+                              <input type="radio" name="rating" id="rating9" value="4.5" required><label for="rating9" title="4.5" class="half"></label>
+                              <input type="radio" name="rating" id="rating8" value="4" required><label for="rating8" title="4"></label>
+                              <input type="radio" name="rating" id="rating7" value="3.5" required><label for="rating7" title="3.5" class="half"></label>
+                              <input type="radio" name="rating" id="rating6" value="3" required><label for="rating6" title="3"></label>
+                              <input type="radio" name="rating" id="rating5" value="2.5" required><label for="rating5" title="2.5" class="half"></label>
+                              <input type="radio" name="rating" id="rating4" value="2" required><label for="rating4" title="2"></label>
+                              <input type="radio" name="rating" id="rating3" value="1.5" required><label for="rating3" title="1.5" class="half"></label>
+                              <input type="radio" name="rating" id="rating2" value="1" required><label for="rating2" title="1"></label>
+                              <input type="radio" name="rating" id="rating1" value="0.5" required><label for="rating1" title="0.5" class="half"></label>
+                            </div><br>
+                            Tiêu đề:
+                            <input type="text" class="form-control" name="subject">
+                            <br>
+                            
+                            Nội dung:
+                            <textarea name="review" class="form-control" id="" placeholder="Bình luận"></textarea><br>
+                            {% if user.is_authenticated %}
+                              {% if orderproduct %}
+                              <button type="submit" class="site-btn" value="Submit Review">Gửi bình luận</button>
+                              {% else %}
+                              <p>Bạn phải mua sản phẩm mới có thể đánh giá </p>
+                              {% endif %}
+                            {% else %}
+                            <p>Bạn phải <span><a href="{% url 'login' %}">Đăng nhập</a></span> để gửi bình luận </p>
+                            {% endif %}
+                          </div>
+                        </form><hr>
+                        {% comment %} <h4>Đánh giá của bạn: </h4>
+                        <div class="rating-star">
+                          <span>
+                            <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503;"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503;"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503;"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503;"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true" style="color: #ffb503;"></i>
+                          </span>
+                        </div><hr> {% endcomment %}
+                        <header>
+                          <h3>Phản hồi từ khách hàng</h3><br>
+                        </header>
+
+                        {% for review in reviews %}                          
+                        <article class="box mb-3" style="background-color: #f0f0f0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                          <div class="icontext w-100">
+                            {% comment %} <img src="" alt="" class="img-xs icon rounded-circle"> {% endcomment %}
+                            <div class="text">
+                              <span class="date text-muted float-md-right">{{review.updated_at}}</span>
+                              <h6 class="mb-1">{{review.user.username}}</h6>
+                              <div class="rating-star">
+                                <span>
+                                  <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                                  <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                                  <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                                  <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                                  <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}" aria-hidden="true" style="color: #ffb503 !important;"></i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-3">
+                            <h6>{{review.subject}}</h6>
+                            <p>{{review.review}}</p>
+                          </div>
+                        </article>
+                        {% endfor %}
+
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+<style>
+  .comment-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  .comment-form h4 {
+    margin-bottom: 20px;
+  }
+
+  .comment-form .form-control {
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+
+  .comment-form .site-btn {
+    background-color: #ffb503;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .comment-form .site-btn:hover {
+    background-color: #e09e00;
+  }
+
+  .customer-feedback h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .customer-feedback hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .tab-pane {
+    padding: 15px; /* Giảm khoảng cách đệm */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px; /* Giảm khoảng cách dưới */
+  }
+
+  .tab-pane h4 {
+    margin-bottom: 15px; /* Giảm khoảng cách dưới của tiêu đề */
+    color: #333;
+    font-weight: bold;
+  }
+
+  .tab-pane p {
+    line-height: 1.5; /* Giảm khoảng cách dòng */
+    color: #666;
+    margin-bottom: 10px; /* Giảm khoảng cách dưới của đoạn văn */
+  }
+
+  .tab-pane hr {
+    border-top: 1px solid #ddd;
+    margin: 15px 0; /* Giảm khoảng cách trên và dưới của đường kẻ ngang */
+  }
+
+  .product-content .col-lg-12 {padding: 0 10px; /* Giảm khoảng cách đệm bên trong cột */
+  }
+</style>
+
+{% endblock content %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<section class="product-shop spad">
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+    {% include 'includes/dashboard_sidebar.html' %}      
+        <div class="col-lg-9 order-1 order-lg-2"> {% comment %}---Sản phẩm---{% endcomment %}
+          <div class="product-show-option">
+            <div class="row">
+                <main class="col-md-12">
+                    <article class="card">
+                        <header class="card-header">
+                            <span>Chỉnh sửa hồ sơ</span>
+                        </header>
+                        <div class="card-body">
+                            <div class="text-center">
+                                {% comment %} <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Profile Picture" width="100", style="border-radius: 50px;"> {% endcomment %}
+                                <img src="{{userprofile.profile_picture.url}}" alt="Profile Picture" width="100", style="border-radius: 50px;">
+                            </div><hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="">Họ và tên</label>
+                                                {{user_form.username}}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="">Số điện thoại</label>
+                                                {{user_form.phone_number}}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="">Ảnh cá nhân</label>
+                                                {{profile_form.profile_picture}}
+                                            </div>
+                                        </div>
+
+                                            <div class="form-group">
+                                                <label for="">Địa chỉ</label>
+                                                {{profile_form.address}}
+                                            </div>
+                                        <input type="submit" value="Lưu" class="btn btn-danger">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock content %}

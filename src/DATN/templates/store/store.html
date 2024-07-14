@@ -1,0 +1,264 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<section class="product-shop spad">
+  <div class="container">
+    <div class="row">
+      {% comment %} <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+        <div class="filter-widget">
+          <h4 class="fw-title">Giới tính</h4>
+            <ul class="filter-catagories">
+              <li><a href="#">Nam</a></li>
+              <li><a href="#">Nữ</a></li>
+              <li><a href="#">Trẻ em</a></li>
+            </ul>
+        </div>    
+        <div class="filter-widget">
+          <h4 class="fw-title">Thương hiệu</h4>
+          <div class="fw-brand-check">
+            <div class="bc-item">
+              <label for="bc-calvin">
+                Calvin Klein
+                <input type="checkbox" id="bc-calvin">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Giá</h4>
+          <div class="filter-range-wrap">
+            <div class="range-slider">
+              <div class="price-input">
+                <input type="text" id="minamount">
+                <input type="text" id="maxamount">
+              </div>
+            </div>
+            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content" data-min="33" data-max="98">
+              <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+              <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+              <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+            </div>
+          </div>
+          <a href="#" class="filter-btn">Lọc giá</a>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Màu sắc</h4>
+          <div class="fw-color-choose">
+            <div class="cs-item">
+              <input type="radio" id="cs-black">
+              <label for="cs-black" class="cs-black">black</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-violet">
+              <label for="cs-violet" class="cs-violet">violet</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-blue">
+              <label for="cs-blue" class="cs-blue">blue</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-green">
+              <label for="cs-green" class="cs-green">green</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-red">
+              <label for="cs-red" class="cs-red">red</label>
+            </div>
+            <div class="cs-item">
+              <input type="radio" id="cs-yellow">
+              <label for="cs-yellow" class="cs-yellow">yellow</label>
+            </div>
+          </div>
+        </div>
+        <div class="filter-widget">
+          <h4 class="fw-title">Kích thước</h4>
+          <div class="fw-size-choose">
+            <div class="sc-item">
+                <input type="radio" id="s-size">
+                <label for="s-size">S</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="m-size">
+              <label for="m-size">M</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="l-size">
+              <label for="l-size">L</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" id="xs-size">
+              <label for="xs-size">XL</label>
+            </div>
+          </div>
+        </div>
+      </div> {% endcomment %}
+
+      <div class="col-lg-12"> {% comment %}---Sản phẩm---{% endcomment %}
+        <div class="product-show-option">
+          <div class="row">
+            <div class="col-lg-7 col-md-7">
+              {% comment %} <div class="select-option">
+                <select class="sorting">
+                  <option value="">Mặc định</option>
+                </select>
+                <select class="p-show">
+                  <option value="">Số lượng: {{product_count}}</option>
+                </select>
+              </div> {% endcomment %}
+              <h5 class="fw-title">Số lượng sản phẩm: {{product_count}}</h5>
+            </div>
+            {% comment %} <div class="col-lg-5 col-md-5 text-right">
+              <p>Hiển thị từ 1->9 sản phẩm</p>
+            </div> {% endcomment %}
+          </div>
+        </div>
+
+        <div class="product-list">
+          <div class="row">
+            {% for product in products %}
+            <div class="col-lg-4 col-sm-6">
+              <div class="product-item">
+                <div class="pi-pic">
+                  <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="" style="width: 250px; height: 350px; object-fit: cover;"></a>
+                  {% if product.promotions > 0 %}
+                  <div class="sale pp-sale">Giảm giá</div>
+                  {% endif %}
+                  <div class="icon">
+                    <i class="">Số lượng: {{product.stock}}</i>
+                  </div>
+                  <ul>
+                    {% if product.stock > 0 %}
+                    <li class="w-icon active"><a href="{% url 'add_cart' product.id %}"><i class="icon_bag_alt"></i>Thêm vào giỏ</a></li>
+                    {% else %}
+                    <li class="w-icon disabled">
+                      <a href="#" style="cursor: not-allowed; background: black; color: white;">
+                        Hết hàng
+                      </a>
+                    </li>                    
+                    {% endif %}
+                    <!-- Additional list items if needed -->
+                  </ul>
+                </div>
+                <div class="pi-text">
+                  <div class="catagory-name">
+                    <a href="{{product.get_url}}" style="color: blue; text-decoration: none;" onmouseover="this.style.color='darkblue'" onmouseout="this.style.color='blue'">
+                      {{product.product_name}}
+                    </a>
+                  </div>
+                  <a href="#"><h5></h5></a>
+                  <div class="product-price">${{ product.price }}
+                    {% if product.promotions > 0 %}
+                      <span>${{ product.promotions }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <nav class="mt-4 d-flex justify-content-center" aria-label="Page navigation sample">
+          {% if products.has_other_pages %}
+          <ul class="pagination">
+              {% if products.has_previous %}
+              <li class="page-item">
+                  <a href="?page={{ products.previous_page_number }}" class="page-link">
+                      <i class="fas fa-chevron-left"></i>
+                  </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a href="#" class="page-link">
+                      <i class="fas fa-chevron-left"></i>
+                  </a>
+              </li>
+              {% endif %}
+              
+              {% for i in products.paginator.page_range %}
+              {% if products.number == i %}
+              <li class="page-item active">
+                  <a href="#" class="page-link">{{ i }}</a>
+              </li>
+              {% else %}
+              <li class="page-item">
+                  <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
+                
+              {% if products.has_next %}
+              <li class="page-item">
+                  <a href="?page={{ products.next_page_number }}" class="page-link">
+                      <i class="fas fa-chevron-right"></i>
+                  </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a href="#" class="page-link">
+                      <i class="fas fa-chevron-right"></i>
+                  </a>
+              </li>
+              {% endif %}
+          </ul>
+          {% endif %}
+      </nav>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+<style>
+  .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      list-style-type: none;
+      padding: 0;
+  }
+
+  .pagination li {
+      margin: 0 5px;
+  }
+
+  .pagination .page-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #f5f5f5;
+      color: #333;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: background-color 0.3s, color 0.3s;
+  }
+
+  .pagination .page-link:hover {
+      background-color: #ddd;
+  }
+
+  .pagination .page-item.active .page-link {
+      background-color: #333;
+      color: #fff;
+  }
+
+  .pagination .page-item.disabled .page-link {
+      color: #aaa;
+  }
+</style>
+{% endblock content %}

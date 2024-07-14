@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<section class="product-shop spad">
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+    {% include 'includes/dashboard_sidebar.html' %}      
+        <div class="col-lg-9 order-1 order-lg-2"> {% comment %}---Sản phẩm---{% endcomment %}
+          <div class="product-show-option">
+            <div class="row">
+                <main  class="col-md-9">
+                    <article class="card">
+                        {% comment %} <header class="card-header">
+                            <span>Tên đăng nhập: </span>
+                            <strong class="d-inline-block mr-3"> {{user.username}}</strong>
+
+                        </header> {% endcomment %}
+                            {% comment %} <strong class="d-inline-block mr-3">Tên đăng nhập:</strong>
+                            <span>{{user.username}}</span> {% endcomment %}
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="card" style="text-align:center;">
+                                        <div class="card-body">
+                                        {% comment %} <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Profile Picture" width="50" height="50" style="border-radius:50%;"> {% endcomment %}
+                                        <img src="{{userprofile.profile_picture.url}}" alt="Profile Picture" width="50" height="50" style="border-radius:50%;">
+                                        </div>
+                                    <p class="mb-0">{{user.username}}</p>
+                                    <p class="mb-0">{{user.email}}</p>
+                                    <p>{{user.phone_number}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card" style="text-align:center;">
+                                        <div class="card-body">
+                                        <h5>Số đơn hàng đã đặt: {{orders_count}} đơn</h5>
+                                        <a href="{% url 'my_orders' %}">Xem đơn hàng</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock content %}

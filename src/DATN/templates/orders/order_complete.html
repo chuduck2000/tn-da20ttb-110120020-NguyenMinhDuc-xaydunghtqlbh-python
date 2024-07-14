@@ -1,0 +1,124 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="container" style="margin-top: 50px;">
+    <center><i class='fas fa-check-circle' style='font-size:70px;color: #28A745'></i></center>
+    
+    <h2 class="text-center">Thanh toán thành công</h2><hr>
+    <div class="text-center">
+        <a href="{% url 'store' %}" class="btn btn-success">Mua thêm</a>
+    </div>
+</div>
+
+<div class="container" style="margin: 0 auto; width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
+    <div class="row invoice row-printable">
+        <div class="col-md-12">
+            <div class="panel panel-default plain" id="dash_0">
+                <div class="panel-body p30">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="invoice-logo"><img src="{% static 'img/logoo.png' %}" height="100" alt=""/></div>
+                        </div>
+
+                        
+                        <div class="col-lg-6">
+                            <div class="invoice-from">
+                                <ul class="list-unstyled text-left">
+                                    <li><strong>Thông tin người nhận</strong></li>
+                                    <li>Tên: {{order.full_name}}</li>
+                                    <li>Địa chỉ: {{order.address}}</li>
+                                    <li>{{order.city}}, {{order.district}}</li>
+                                    <li>{{order.ward}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="invoice-details mt25">
+                                <div class="well">
+                                    <ul class="list-unstyled mb0">
+                                        <li><strong>Mã đơn hàng: </strong>#{{order_number}}</li>
+                                        <li><strong>Mã giao dịch: </strong>{{transID}}</li>
+                                        <li><strong>Ngày đặt hàng: </strong>{{order.created_at|date:"d/m/Y, H:i"}}</li>
+                                        <li><strong>Trạng thái: </strong>{{payment.status}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="invoice-items">
+                                <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="per70 text-center">SẢN PHẨM</th>
+                                                <th class="per5 text-center">SỐ LƯỢNG</th>
+                                                <th class="per25 text-center">ĐƠN GIÁ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {% for item in ordered_products %}
+                                            
+                                            <tr>
+                                                <td>{{item.product.product_name}}
+                                                    <p class="text-muted small">
+                                                        {% if item.variations.all %}
+                                                        
+                                                        {% for i in item.variations.all %}
+                                                            {{i.variation_category | capfirst}} : {{i.variation_value | capfirst}} <br>
+                                                        {% endfor %}
+                                                            
+                                                        {% endif %} 
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">{{item.quantity}}</td>
+                                                <td class="text-center">{{item.product_price}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Tạm tính: </th>
+                                                <th class="text-center">${{subtotal}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Phí vận chuyển: </th>
+                                                <th class="text-center">${{order.ship}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Giảm giá: </th>
+                                                <th class="text-center">${{discount}}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Tổng cộng: </th>
+                                                <th class="text-center">${{order.order_total}} </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="invoice-footer mt25">
+                                <p class="text-center">Cảm ơn bạn đã mua hàng của chúng tôi (^_^)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Js Plugins -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
+
+{% endblock content %}

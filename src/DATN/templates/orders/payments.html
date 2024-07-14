@@ -1,0 +1,290 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="breadcrumb-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-text">
+          <a href="#"><i class="fa fa-home"></i>Home</a>
+          <span>Thanh toán đơn hàng</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="shopping-cart spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card">
+          <h5 class="card-header">Địa chỉ đặt hàng</h5>
+          <div class="card-body">
+            <p class="card-text">{{order.full_name}}</p>
+            <p class="card-text">{{order.address}}</p>
+            <p class="card-text">{{order.email}}</p>
+            <p class="card-text">{{order.phone}}</p>
+
+            {% if order.order_note %}
+            <b>Ghi chú đặt hàng: </b>{{ order.order_note }}
+            {% endif %}
+
+          </div>
+        </div>
+        <div class="card">
+          <h5 class="card-header">Thông tin sản phẩm và đánh giá</h5>
+          <div class="card-body">
+            <div class="cart-table" style="display: block;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr>
+                    <th>Hình ảnh</th>
+                    <th class="p-name">Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng</th>
+                    {% comment %} <th><i class="ti-close"></i></th> {% endcomment %}
+                  </tr>
+                </thead>
+              </table>
+              <div style="max-height: 300px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tbody>
+                    {% for cart_item in cart_items %}
+                    <tr>
+                      <td class="cart-pic first-row"><img src="{{cart_item.product.images.url}}" height="100" alt="">
+                      </td>
+                      <td class="cart-title first-row">
+                        <figure class="itemside align-items-center">
+                          <figcaption class="info">
+                            <a href="{{ cart_item.product.get_url }}"
+                              class="title text-dark">{{cart_item.product.product_name}}</a>
+                            <p class="text-muted small">
+                              {% if cart_item.variations.all %}
+                              {% for item in cart_item.variations.all %}
+                              {{item.variation_category | capfirst}} : {{item.variation_value | capfirst}} <br>
+                              {% endfor %}
+                              {% endif %}
+                            </p>
+                          </figcaption>
+                        </figure>
+                      </td>
+                      <td class="p-price first-row">{{cart_item.product.price}}</td>
+                      <td class="qua-col first-row">
+                        <div class="quantity">{{cart_item.quantity}}</div>
+                      </td>
+                      <td class="total-price first-row">{{cart_item.sub_total}}</td>
+                      {% comment %} <td class="close-td first-row"><a class="ti-close"
+                          href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"></a></td>
+                      {% endcomment%}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="proceed-checkout">
+          <ul>
+            <li class="cart-total">Tạm tính:<span>{{total}}</span></li>
+            <li class="" style="display: flex; align-items: center; justify-content: center;"><span>+</span></li>
+            <li class="subtotal">Vận chuyển:<span>{{ship}}</span></li>
+            <li class="subtotal">Giảm giá:<span>{{discount}}</span></li>
+            <li class="cart-total">Tổng cộng:<span>{{grand_total}}</span></li>
+          </ul>
+          <a href="#" id="cod-button" class="proceed-btn">Thanh toán khi nhận hàng</a>
+        </div><br>
+        <div id="paypal-button-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
+
+{% comment %}
+<script>
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  var amount = "{{grand_total}}"
+  var url = "{% url 'payments' %}"
+  var csrftoken = getCookie('csrftoken');
+  var orderID = "{{order.order_number}}"
+  var payments_method = 'PayPal'
+
+  paypal.Buttons({
+
+    style: {
+      color: 'blue',
+      shape: 'pill',
+      label: 'pay',
+      height: 40
+    },
+
+    createOrder: function (data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: amount, // Replace with the actual amount
+          }
+        }]
+      });
+    },
+    onApprove: function (data, actions) {
+      return actions.order.capture().then(function (details) {
+
+        console.log(details);
+        sendData();
+        function sendData() {
+          fetch(url, {
+            method: "POST",
+            header: {
+              "Content-type": "application/json",
+              "X-CSRFToken": csrftoken,
+            },
+            body: JSON.stringify({
+              orderID: orderID,
+              transID: details.id,
+              payments_method: payments_method,
+              status: details.status,
+            }),
+          })
+        }
+        // alert('Transaction completed by ' + details.payer.name.given_name);
+        // Optionally, you can redirect the user to a success page or perform additional actions
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
+{% endcomment %}
+
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  var amount = "{{grand_total}}";
+  var url = "{% url 'payments' %}";
+  var csrftoken = getCookie('csrftoken');
+  var orderID = "{{order.order_number}}";
+  var paypalMethod = 'PayPal';
+  var codMethod = 'COD';
+  var redirect_url = "{% url 'order_complete' %}";
+
+  // PayPal buttons configuration
+  paypal.Buttons({
+    style: {
+      color: 'blue',
+      shape: 'pill',
+      label: 'pay',
+      height: 40
+    },
+    createOrder: function (data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: amount,
+          }
+        }]
+      });
+    },
+    onApprove: function (data, actions) {
+      return actions.order.capture().then(function (details) {
+        console.log(details);
+        sendData(details, paypalMethod);
+      });
+    },
+    onError: function (err) {
+      console.error(err);
+      alert('There was an error processing your payment: ' + err);
+    }
+  }).render('#paypal-button-container');
+
+  function sendData(details, paymentMethod) {
+    let transID = '';
+    if (paymentMethod === codMethod) {
+      transID = `COD-${orderID}`;  // Generate COD payment ID
+    } else if (paymentMethod === paypalMethod) {
+      transID = details.id;
+    }
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({
+        orderID: orderID,
+        transID: transID,
+        payment_method: paymentMethod,
+        status: paymentMethod === paypalMethod ? details.status : 'Pending',
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.order_number && (data.transID || paymentMethod === codMethod)) {
+          window.location.href = redirect_url + '?order_number=' + data.order_number + '&payment_id=' + data.transID;
+        } else {
+          throw new Error('Invalid response from server');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error processing your payment: ' + error.message);
+      });
+  }
+
+  // Handle COD payment
+  document.getElementById('cod-button').addEventListener('click', function (event) {
+    event.preventDefault();
+    sendData({}, codMethod);
+  });
+</script>
+
+{% endblock content %}

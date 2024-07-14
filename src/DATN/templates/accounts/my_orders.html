@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<section class="product-shop spad">
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+    {% include 'includes/dashboard_sidebar.html' %}      
+        <div class="col-lg-9 order-1 order-lg-2"> {% comment %}---Sản phẩm---{% endcomment %}
+          <div class="product-show-option">
+            <div class="row">
+                <main class="col-md-12">
+                    <article class="card">
+                        
+                        <header class="card-header">
+                            <span>Lịch sử đơn hàng</span>
+                        </header>
+                        {% if not orders %}
+                            <div class="col-12 text-center"><br>
+                            <h3>Bạn chưa có đơn hàng nào.</h3>
+                            </div>
+                        
+                        {% else %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Đơn</th>
+                                                <th scope="col">Người nhận hàng</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Tổng tiền hàng</th>
+                                                <th scope="col">Ngày</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order in orders %}
+                                            <tr>
+                                                <th scope="row"><a href="{% url 'order_detail' order.order_number %}">{{order.order_number}}</a></th>
+                                                <td>{{order.full_name}}</td>
+                                                <td>{{order.phone}}</td>
+                                                <td>${{order.order_total}}</td>
+                                                <td>{{order.created_at|date:"d/m/Y, H:i"}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </article>
+                </main>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock content %}

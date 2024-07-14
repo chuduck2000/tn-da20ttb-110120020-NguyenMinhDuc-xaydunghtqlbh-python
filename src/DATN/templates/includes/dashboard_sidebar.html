@@ -1,0 +1,60 @@
+<div
+  class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter"
+>
+  <ul class="list-group">
+    <a
+      href="{% url 'dashboard' %}"
+      class="list-group-item {% if '/accounts/' == request.path %} active {% endif %}"
+    >
+      <i class="fas fa-user"></i> Thông tin cá nhân
+    </a>
+    <a
+      href="{% url 'my_orders' %}"
+      class="list-group-item {% if '/my_orders/' in request.path %} active {% endif %}"
+    >
+      <i class="fas fa-box"></i> Đơn hàng của tôi
+    </a>
+    <a
+      href="{% url 'edit_profile' %}"
+      class="list-group-item {% if '/edit_profile/' in request.path %} active {% endif %}"
+    >
+      <i class="fas fa-edit"></i> Sửa hồ sơ
+    </a>
+    <a
+      href="{% url 'change_password' %}"
+      class="list-group-item {% if '/change_password/' in request.path %} active {% endif %}"
+    >
+      <i class="fas fa-lock"></i> Đổi mật khẩu
+    </a>
+  </ul>
+</div>
+
+<!-- CSS styles -->
+<style>
+  .sidebar-title {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    color: #333;
+  }
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 1.1em;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .list-group-item i {
+    margin-right: 10px;
+  }
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+  }
+  .list-group-item.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+</style>

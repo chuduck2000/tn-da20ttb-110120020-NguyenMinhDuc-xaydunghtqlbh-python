@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!-- Js Plugins -->
+
+{% if request.GET.command == 'verification' %}
+<div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px">
+  Cảm ơn bạn đã đăng ký. Chúng tôi đã gửi mã kích hoạt tới địa chỉ Email [{{request.GET.email}}]
+  <br><br>
+  Đến <a href="{% url 'login' %}">Đăng nhập</a>
+</div> 
+{% else %}
+  
+<div class="breadcrumb-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-text">
+          <a href="#"><i class="fa fa-home"></i>Home</a>
+          <span>Đăng nhập</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="register-login-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3">
+        <div class="login-form">
+          <h2>Đăng nhập</h2>
+          
+        {% include 'includes/alerts.html' %}
+        
+          <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="group-input">
+              <label for="email">Email: </label>
+              <input type="email" id="email" class="form-control"  placeholder="Điền email ở đây" name="email"/>
+            </div>
+            <div class="group-input">
+              <label for="pass">Mật khẩu:</label>
+              <input type="password" class="form-control" placeholder="Điền mật khẩu ở đây" id="pass" name="password"/>
+            </div>
+            <div class="group-input gi-check">
+              <div class="gi-more">
+                <label for="save-pass"
+                  >Lưu mật khẩu
+                  <input type="checkbox" id="save-pass" />
+                  <span class="checkmark"></span>
+                </label>
+                <a href="{% url 'forgotPassword' %}" class="forget-pass">Quên mật khẩu</a>
+              </div>
+            </div>
+            <button type="submit" class="site-btn login-btn">Đăng nhập</button>
+          </form>
+          <div class="switch-login">
+            <a href="{% url 'register' %}" class="or-login">Tạo tài khoản</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Js Plugins -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,2 @@
+{% autoescape off %} Chào {{user.username}}, Vui lòng nhấp vào liên kết bên dưới
+http://{{domain}}{% url 'activate' uidb64=uid token=token %} {% endautoescape %}
