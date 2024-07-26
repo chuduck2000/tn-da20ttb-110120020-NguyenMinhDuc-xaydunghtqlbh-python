@@ -9,10 +9,9 @@ class OrderProductInline(admin.TabularInline):
                        'quantity', 'product_price', 'ordered']
     extra = 0
 
-
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['order_number', 'full_name', 'phone',
-                    'email', 'city', 'order_total', 'ship', 'is_ordered', 'created_at']
+                    'email', 'order_total', 'ship', 'is_ordered', 'created_at']
     list_filter = ['status', 'is_ordered']
     search_fields = ['order_number', 'full_name', 'phone', 'email']
     list_per_page = 20

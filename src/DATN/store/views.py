@@ -124,6 +124,7 @@ def discounted_products(request):
     return render(request, 'store/discounted_products.html', context)
 
 def new_products(request):
+
     products = Product.objects.filter(is_available=True).order_by('-created_date')
     paginator = Paginator(products, 9)
     page = request.GET.get('page')
@@ -137,3 +138,7 @@ def new_products(request):
         'current_path': current_path,
     }
     return render(request, 'store/new_products.html', context)
+
+def stat(request):
+    return render(request,'store/stat.html')
+

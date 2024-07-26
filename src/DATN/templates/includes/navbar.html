@@ -139,7 +139,7 @@
           <ul class="depart-hover">
             {% for category in links %}
             <li class="active">
-              <a href="{{category.get_url}}">{{category.category_name}}</a>
+              <a href="{{category.get_url}}" class="category-link">{{category.category_name}}</a>
             </li>
             {% endfor %}
           </ul>
@@ -157,3 +157,19 @@
     </div>
   </div>
 </header>
+
+<style>
+.category-link {
+  color: black; 
+  display: block; 
+  text-align: center; 
+  padding: 10px; 
+  text-decoration: none; 
+}
+
+.category-link:hover {
+  background-color: black; 
+  color: white; 
+}
+
+</style>

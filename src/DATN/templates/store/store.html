@@ -116,47 +116,46 @@
         <div class="product-list">
           <div class="row">
             {% for product in products %}
-            <div class="col-lg-4 col-sm-6">
-              <div class="product-item">
-                <div class="pi-pic">
-                  <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="" style="width: 250px; height: 350px; object-fit: cover;"></a>
-                  {% if product.promotions > 0 %}
-                  <div class="sale pp-sale">Giảm giá</div>
-                  {% endif %}
-                  <div class="icon">
-                    <i class="">Số lượng: {{product.stock}}</i>
-                  </div>
-                  <ul>
-                    {% if product.stock > 0 %}
-                    <li class="w-icon active"><a href="{% url 'add_cart' product.id %}"><i class="icon_bag_alt"></i>Thêm vào giỏ</a></li>
-                    {% else %}
-                    <li class="w-icon disabled">
-                      <a href="#" style="cursor: not-allowed; background: black; color: white;">
-                        Hết hàng
+              {% if product.stock > 0 %}
+                <div class="col-lg-4 col-sm-6">
+                  <div class="product-item">
+                    <div class="pi-pic">
+                      <a href="{{ product.get_url }}"><img src="{{ product.images.url }}" alt=""
+                          style="width: 250px; height: 350px; object-fit: cover;"></a>
+                      {% if product.promotions > 0 %}
+                      <div class="sale pp-sale">Giảm giá</div>
+                      {% endif %}
+                      <div class="icon">
+                        <i class="">Số lượng: {{ product.stock }}</i>
+                      </div>
+                      <ul>
+                        <li class="w-icon active"><a href="{% url 'add_cart' product.id %}"><i class="icon_bag_alt"></i>Thêm vào giỏ</a></li>
+                        <!-- Additional list items if needed -->
+                      </ul>
+                    </div>
+                    <div class="pi-text">
+                      <div class="catagory-name">
+                        <a href="{{ product.get_url }}" style="color: blue; text-decoration: none;"
+                          onmouseover="this.style.color='darkblue'" onmouseout="this.style.color='blue'">
+                          {{ product.product_name }}
+                        </a>
+                      </div>
+                      <a href="#">
+                        <h5></h5>
                       </a>
-                    </li>                    
-                    {% endif %}
-                    <!-- Additional list items if needed -->
-                  </ul>
-                </div>
-                <div class="pi-text">
-                  <div class="catagory-name">
-                    <a href="{{product.get_url}}" style="color: blue; text-decoration: none;" onmouseover="this.style.color='darkblue'" onmouseout="this.style.color='blue'">
-                      {{product.product_name}}
-                    </a>
-                  </div>
-                  <a href="#"><h5></h5></a>
-                  <div class="product-price">${{ product.price }}
-                    {% if product.promotions > 0 %}
-                      <span>${{ product.promotions }}</span>
-                    {% endif %}
+                      <div class="product-price">${{ product.price }}
+                        {% if product.promotions > 0 %}
+                        <span>${{ product.promotions }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              {% endif %}
             {% endfor %}
           </div>
         </div>
+        
 
         <nav class="mt-4 d-flex justify-content-center" aria-label="Page navigation sample">
           {% if products.has_other_pages %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+
+<div class="centered">
+    <canvas id="myChart"></canvas>
+</div>
+
+<style>
+    .centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; 
+    width: 500px; 
+}
+</style>
+
+<script src="{% static 'js/chart.js' %}">
+</script>
+
+<!-- Js Plugins -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+<script src="{% static 'js/jquery.dd.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
+
+{% endblock content %}

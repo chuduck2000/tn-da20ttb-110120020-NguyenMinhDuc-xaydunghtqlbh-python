@@ -122,14 +122,14 @@ def place_order(request):
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
 
-    # Calculate shipping charge
+    
     if total > 1000:
         discount = round(total * 0.10, 2)
-        ship = 0  # Free shipping for orders over $1000
+        ship = 0 
     elif total > 500:
-        ship = 0  # Free shipping for orders over $500
+        ship = 0  
     else:
-        ship = 10  # $10 shipping charge for orders $500 or below
+        ship = 10  
 
     grand_total = total - discount + ship
 
@@ -179,7 +179,6 @@ def place_order(request):
         'discount': discount,
     }
     return render(request, 'store/checkout.html', context)
-
 
 # def payments(request):
 #     if request.method == 'POST':
